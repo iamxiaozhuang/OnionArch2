@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using MediatR;
-using OnionArch.Domain.Common.Database;
+using OnionArch.Domain.Common.Repositories;
 using OnionArch.Domain.ProductInventory;
 using System;
 using System.Collections.Generic;
@@ -13,11 +13,17 @@ namespace OnionArch.Application.ProductInventoryUseCase
 {
     public class CreateProductInventoryHandler : IRequestHandler<CreateProductInventory>
     {
+        private readonly RepositoryService<ProductInventory> _repositoryService;
+
+        public CreateProductInventoryHandler(RepositoryService<ProductInventory> repositoryService)
+        {
+            _repositoryService = repositoryService;
+        }
 
         public async Task<Unit> Handle(CreateProductInventory request, CancellationToken cancellationToken)
         {
             ProductInventory entity = request.Adapt<ProductInventory>();
-            entity.Create();
+            await _repositoryService.Create(entity);
             return Unit.Value;
         }
     }

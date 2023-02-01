@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OnionArch.Domain.Common.Database;
+using OnionArch.Domain.Common.Repositories;
 using OnionArch.Application.Common.CQRS;
 
 namespace OnionArch.Application.Common.Behaviours

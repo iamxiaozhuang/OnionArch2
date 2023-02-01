@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OnionArch.Domain.Common.Base;
-using OnionArch.Domain.Common.Database;
+using OnionArch.Domain.Common.Entities;
 using OnionArch.Domain.Common.Exceptions;
+using OnionArch.Domain.Common.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnionArch.Infrastructure.Common.Database.RequestHandlers
+namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
 {
     public class ReadEntityRequestHandler<TDbContext,TEntity> : IRequestHandler<ReadEntityRequest<TEntity>,TEntity> where TDbContext : DbContext where TEntity : BaseEntity
     {
@@ -18,16 +18,6 @@ namespace OnionArch.Infrastructure.Common.Database.RequestHandlers
         public ReadEntityRequestHandler(TDbContext dbContext)
         {
             _dbContext = dbContext;
-        }
-
-        public async Task Handle(DomainEventEntity<TEntity> notification, CancellationToken cancellationToken)
-        {
-            switch(notification.EventName)
-            {
-                case "Create":
-                    await _dbContext.Set<TEntity>().AddAsync(notification.AggregateRootEntity);
-                    break;
-            }
         }
 
         public async Task<TEntity> Handle(ReadEntityRequest<TEntity> request, CancellationToken cancellationToken)

@@ -12,8 +12,8 @@ using OnionArch.Infrastructure.Database;
 namespace OnionArch.Infrastructure.Migrations
 {
     [DbContext(typeof(OnionArchDb20Context))]
-    [Migration("20230106083152_20230106")]
-    partial class _20230106
+    [Migration("20230201070754_20230201")]
+    partial class _20230201
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,23 +25,24 @@ namespace OnionArch.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OnionArch.Domain.Common.Base.DomainEventEntity<OnionArch.Domain.ProductInventory.ProductInventory>", b =>
+            modelBuilder.Entity("OnionArch.Domain.Common.Entities.EntityChangedAuditEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AggregateRootEntityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AggregateRootId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("EntityJson")
+                    b.Property<string>("ChangeType")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("EventName")
+                    b.Property<string>("CurrentValues")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("EntityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("EntityType")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -52,14 +53,20 @@ namespace OnionArch.Infrastructure.Migrations
                     b.Property<DateTime>("OccurredOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("OriginalValues")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AggregateRootEntityId");
+                    b.HasIndex("TenantId");
 
-                    b.ToTable("ProductInventoryDomainEvents");
+                    b.HasIndex("Id", "TenantId");
+
+                    b.ToTable("EntityChangedAuditLog");
                 });
 
             modelBuilder.Entity("OnionArch.Domain.ProductInventory.ProductInventory", b =>
@@ -80,21 +87,11 @@ namespace OnionArch.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("Id", "TenantId");
+
                     b.ToTable("ProductInventory");
-                });
-
-            modelBuilder.Entity("OnionArch.Domain.Common.Base.DomainEventEntity<OnionArch.Domain.ProductInventory.ProductInventory>", b =>
-                {
-                    b.HasOne("OnionArch.Domain.ProductInventory.ProductInventory", "AggregateRootEntity")
-                        .WithMany("DomainEvents")
-                        .HasForeignKey("AggregateRootEntityId");
-
-                    b.Navigation("AggregateRootEntity");
-                });
-
-            modelBuilder.Entity("OnionArch.Domain.ProductInventory.ProductInventory", b =>
-                {
-                    b.Navigation("DomainEvents");
                 });
 #pragma warning restore 612, 618
         }

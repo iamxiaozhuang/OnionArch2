@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OnionArch.Domain.Common.Base;
 using OnionArch.Domain.Common.Tenant;
 using OnionArch.Domain.ProductInventory;
 using OnionArch.Infrastructure.Common.Database;
@@ -22,7 +21,6 @@ namespace OnionArch.Infrastructure.Database
 
         public DbSet<ProductInventory> ProductInventory { get; set; }
 
-        public DbSet<DomainEventEntity<ProductInventory>> ProductInventoryDomainEvents { get; set; }
 
 
     }

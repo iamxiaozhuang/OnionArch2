@@ -1,7 +1,7 @@
 ﻿
 using MediatR;
 
-namespace OnionArch.Domain.Common.Database
+namespace OnionArch.Domain.Common.Repositories
 {
     public class CommitRequest : IRequest<int>
     {

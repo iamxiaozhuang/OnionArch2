@@ -1,12 +1,7 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OnionArch.Domain.Common.Database
+namespace OnionArch.Domain.Common.Repositories
 {
 
     public class IsExistRequest<TEntity> : IRequest<bool>

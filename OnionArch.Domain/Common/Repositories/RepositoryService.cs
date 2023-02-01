@@ -1,16 +1,11 @@
 ﻿using MediatR;
-using OnionArch.Domain.Common.Base;
+using OnionArch.Domain.Common.Entities;
 using OnionArch.Domain.Common.Paged;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OnionArch.Domain.Common.Database
+namespace OnionArch.Domain.Common.Repositories
 {
-    public class RepositoryService<TEntity> where TEntity : AggregateRoot<TEntity>
+    public class RepositoryService<TEntity> where TEntity : BaseEntity
     {
         private readonly IMediator _mediator;
 
@@ -20,7 +15,56 @@ namespace OnionArch.Domain.Common.Database
         }
 
         /// <summary>
-        /// 查询单个实体
+        /// 创建单个实体
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public async Task<TEntity> Create(TEntity entity)
+        {
+            return await _mediator.Send(new CreateEntityRequest<TEntity>(entity));
+        }
+        /// <summary>
+        /// 创建多个实体
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public async Task Create(params TEntity[] entities)
+        {
+            await _mediator.Send(new CreateEntitiesRequest<TEntity>(entities));
+        }
+
+        /// <summary>
+        /// 删除单个实体
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<TEntity> Delete(Guid Id)
+        {
+            return await _mediator.Send(new DeleteEntityRequest<TEntity>(Id));
+        }
+        /// <summary>
+        /// 删除多个实体
+        /// </summary>
+        /// <param name="whereLambda"></param>
+        /// <returns></returns>
+        public async Task<int> Delete(Expression<Func<TEntity, bool>> whereLambda)
+        {
+            return await _mediator.Send(new DeleteEntitiesRequest<TEntity>(whereLambda));
+        }
+
+         /// <summary>
+        /// 获取单个实体以更新实体字段
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<TEntity> GetEntity(Guid Id)
+        {
+            return await _mediator.Send(new GetEntityRequest<TEntity>(Id));
+        }
+
+
+        /// <summary>
+        /// 查询单个实体(不支持更新实体)
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -38,7 +82,7 @@ namespace OnionArch.Domain.Common.Database
         /// <returns></returns>
         public async Task<IQueryable<TEntity>> ReadEntities<TOrder>(Expression<Func<TEntity, bool>> whereLambda, Expression<Func<TEntity, TOrder>> orderbyLambda, bool isAsc = true)
         {
-            return await _mediator.Send(new ReadEntitiesRequest<TEntity, TOrder>(whereLambda,orderbyLambda,isAsc));
+            return await _mediator.Send(new ReadEntitiesRequest<TEntity, TOrder>(whereLambda, orderbyLambda, isAsc));
         }
         /// <summary>
         /// 分页查询多个实体

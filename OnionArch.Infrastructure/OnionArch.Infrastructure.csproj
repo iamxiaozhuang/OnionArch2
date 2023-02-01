@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Database\Configurations\" />
+    <Folder Include="Common\EntityFramework\Configurations\" />
     <Folder Include="Database\Configurations\" />
   </ItemGroup>
 
