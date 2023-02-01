@@ -8,6 +8,7 @@ using OnionArch.Infrastructure.Common.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,7 +25,9 @@ namespace OnionArch.Infrastructure.Common.EntityFramework.NotificationHandlers
 
         public async Task Handle(EntityChangedDomainEvent notification, CancellationToken cancellationToken)
         {
-            var entity = new EntityChangedAuditEntity(nameof(notification.EventSource), notification.EventSource.Id, notification.ChangeType, notification.OriginalValues, notification.CurrentValues, notification.OccurredBy, notification.OccurredOn);
+            var entity = new EntityChangedAuditEntity(notification.EventSource.GetType().FullName, notification.EventSource.Id, notification.ChangeType, notification.OriginalValues, notification.CurrentValues, notification.OccurredBy, notification.OccurredOn);
+            entity.Id = Guid.NewGuid();
+            entity.TenantId = notification.EventSource.TenantId;
             await _repositoryService.Create(entity);
         }
 

@@ -1,9 +1,9 @@
 using OnionArch.Application;
 using OnionArch.Application.ProductInventoryUseCase;
-using OnionArch.Domain.Common.Tenant;
+using OnionArch.Domain.Common.CurrentContext;
 using OnionArch.Infrastructure;
 using OnionArch.WebApi.Common;
-using OnionArch.WebApi.Common.Tenant;
+using OnionArch.WebApi.Common.CurrentContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +16,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICurrentTenant, CurrentTenant>();
+builder.Services.AddScoped<ICurrentContext, CurrentContext>();
 
 var app = builder.Build();
 

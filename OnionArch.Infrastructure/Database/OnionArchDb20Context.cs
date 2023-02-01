@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OnionArch.Domain.Common.Tenant;
+using OnionArch.Domain.Common.CurrentContext;
 using OnionArch.Domain.ProductInventory;
 using OnionArch.Infrastructure.Common.Database;
 using System;
@@ -14,8 +14,8 @@ namespace OnionArch.Infrastructure.Database
     public class OnionArchDb20Context : BaseDbContext<OnionArchDb20Context>
     {
         public OnionArchDb20Context(
-            DbContextOptions<OnionArchDb20Context> options,ICurrentTenant currentTenant, IMediator mediator)
-            : base(options, currentTenant, mediator)
+            DbContextOptions<OnionArchDb20Context> options, ICurrentContext currentContext, IMediator mediator)
+            : base(options, currentContext, mediator)
         {
         }
 
