@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
 {
-    public class GetEntityRequestHandler<TDbContext,TEntity> : IRequestHandler<GetEntityRequest<TEntity>,TEntity> where TDbContext : DbContext where TEntity : BaseEntity
+    public class QueryEntityRequestHandler<TDbContext,TEntity> : IRequestHandler<QueryEntityRequest<TEntity>,TEntity> where TDbContext : DbContext where TEntity : BaseEntity
     {
         private readonly TDbContext _dbContext;
 
-        public GetEntityRequestHandler(TDbContext dbContext)
+        public QueryEntityRequestHandler(TDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<TEntity> Handle(GetEntityRequest<TEntity> request, CancellationToken cancellationToken)
+        public async Task<TEntity> Handle(QueryEntityRequest<TEntity> request, CancellationToken cancellationToken)
         {
-            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(p => p.Id == request.Id);
+            var entity = await _dbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(p => p.Id == request.Id);
             if (entity == null)
             {
                 throw new NotFoundException(nameof(TEntity), request.Id, "The resource is not found");

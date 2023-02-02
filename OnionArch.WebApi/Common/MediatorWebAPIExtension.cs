@@ -91,7 +91,7 @@ namespace OnionArch.WebApi.Common
                     }).WithName(htttpUrl).WithOpenApi();
                     break;
                 case HttpMethodToGenerate.Get:
-                    app.MapGet(htttpUrl, async ([FromServices] IMediator mediator, TRequest request) =>
+                    app.MapGet(htttpUrl, async ([FromServices] IMediator mediator, [AsParameters] TRequest request) =>
                     {
                         TResponse response = await mediator.Send(request);
                         return Results.Ok(response);
@@ -112,7 +112,7 @@ namespace OnionArch.WebApi.Common
                     }).WithName(htttpUrl).WithOpenApi();
                     break;
                 case HttpMethodToGenerate.Delete:
-                    app.MapDelete(htttpUrl, async ([FromServices] IMediator mediator,  TRequest request) =>
+                    app.MapDelete(htttpUrl, async ([FromServices] IMediator mediator, [FromBody] TRequest request) =>
                     {
                         TResponse response = await mediator.Send(request);
                         return Results.NoContent();

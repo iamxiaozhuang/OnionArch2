@@ -19,18 +19,18 @@ namespace OnionArch.Domain.Common.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<TEntity> Create(TEntity entity)
+        public async Task<TEntity> Add(TEntity entity)
         {
-            return await _mediator.Send(new CreateEntityRequest<TEntity>(entity));
+            return await _mediator.Send(new AddEntityRequest<TEntity>(entity));
         }
         /// <summary>
         /// 创建多个实体
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        public async Task Create(params TEntity[] entities)
+        public async Task Add(params TEntity[] entities)
         {
-            await _mediator.Send(new CreateEntitiesRequest<TEntity>(entities));
+            await _mediator.Send(new AddEntitiesRequest<TEntity>(entities));
         }
 
         /// <summary>
@@ -38,18 +38,18 @@ namespace OnionArch.Domain.Common.Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<TEntity> Delete(Guid Id)
+        public async Task<TEntity> Remove(Guid Id)
         {
-            return await _mediator.Send(new DeleteEntityRequest<TEntity>(Id));
+            return await _mediator.Send(new RemoveEntityRequest<TEntity>(Id));
         }
         /// <summary>
         /// 删除多个实体
         /// </summary>
         /// <param name="whereLambda"></param>
         /// <returns></returns>
-        public async Task<int> Delete(Expression<Func<TEntity, bool>> whereLambda)
+        public async Task<int> Remove(Expression<Func<TEntity, bool>> whereLambda)
         {
-            return await _mediator.Send(new DeleteEntitiesRequest<TEntity>(whereLambda));
+            return await _mediator.Send(new RemoveEntitiesRequest<TEntity>(whereLambda));
         }
 
          /// <summary>
@@ -57,9 +57,14 @@ namespace OnionArch.Domain.Common.Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<TEntity> GetEntity(Guid Id)
+        public async Task<TEntity> Edit(Guid Id)
         {
-            return await _mediator.Send(new GetEntityRequest<TEntity>(Id));
+            return await _mediator.Send(new EditEntityRequest<TEntity>(Id));
+        }
+
+        public async Task<IQueryable<TEntity>> Edit(Expression<Func<TEntity, bool>> whereLambda)
+        {
+            return await _mediator.Send(new EditEntitiesRequest<TEntity>(whereLambda));
         }
 
 
@@ -68,21 +73,16 @@ namespace OnionArch.Domain.Common.Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<TEntity> ReadEntity(Guid Id)
+        public async Task<TEntity> Query(Guid Id)
         {
-            return await _mediator.Send(new ReadEntityRequest<TEntity>(Id));
+            return await _mediator.Send(new QueryEntityRequest<TEntity>(Id));
         }
         /// <summary>
         /// 查询多个实体
         /// </summary>
-        /// <typeparam name="TOrder"></typeparam>
-        /// <param name="whereLambda"></param>
-        /// <param name="orderbyLambda"></param>
-        /// <param name="isAsc"></param>
-        /// <returns></returns>
-        public async Task<IQueryable<TEntity>> ReadEntities<TOrder>(Expression<Func<TEntity, bool>> whereLambda, Expression<Func<TEntity, TOrder>> orderbyLambda, bool isAsc = true)
+        public async Task<IQueryable<TEntity>> Query(Expression<Func<TEntity, bool>> whereLambda)
         {
-            return await _mediator.Send(new ReadEntitiesRequest<TEntity, TOrder>(whereLambda, orderbyLambda, isAsc));
+            return await _mediator.Send(new QueryEntitiesRequest<TEntity>(whereLambda));
         }
         /// <summary>
         /// 分页查询多个实体
@@ -93,9 +93,9 @@ namespace OnionArch.Domain.Common.Repositories
         /// <param name="orderbyLambda"></param>
         /// <param name="isAsc"></param>
         /// <returns></returns>
-        public async Task<PagedResult<TEntity>> ReadPagedEntities<TOrder>(Expression<Func<TEntity, bool>> whereLambda, PagedOption pagedOption, Expression<Func<TEntity, TOrder>> orderbyLambda, bool isAsc = true)
+        public async Task<PagedResult<TEntity>> Query<TOrder>(Expression<Func<TEntity, bool>> whereLambda, PagedOption pagedOption, Expression<Func<TEntity, TOrder>> orderbyLambda, bool isAsc = true)
         {
-            return await _mediator.Send(new ReadPagedEntitiesRequest<TEntity, TOrder>(whereLambda, pagedOption, orderbyLambda, isAsc));
+            return await _mediator.Send(new QueryPagedEntitiesRequest<TEntity, TOrder>(whereLambda, pagedOption, orderbyLambda, isAsc));
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace OnionArch.Domain.Common.Repositories
         /// </summary>
         /// <param name="whereLambda"></param>
         /// <returns></returns>
-        public async Task<bool> IsExist(Expression<Func<TEntity, bool>> whereLambda)
+        public async Task<bool> Any(Expression<Func<TEntity, bool>> whereLambda)
         {
-            return await _mediator.Send(new IsExistRequest<TEntity>(whereLambda));
+            return await _mediator.Send(new AnyEntitiesRequest<TEntity>(whereLambda));
         }
     }
 }

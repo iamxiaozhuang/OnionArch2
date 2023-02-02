@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
 {
-    public class CreateEntityRequestHandler<TDbContext,TEntity> : IRequestHandler<CreateEntityRequest<TEntity>,TEntity> where TDbContext : DbContext where TEntity : BaseEntity
+    public class AddEntityRequestHandler<TDbContext,TEntity> : IRequestHandler<AddEntityRequest<TEntity>,TEntity> where TDbContext : DbContext where TEntity : BaseEntity
     {
         private readonly TDbContext _dbContext;
 
-        public CreateEntityRequestHandler(TDbContext dbContext)
+        public AddEntityRequestHandler(TDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<TEntity> Handle(CreateEntityRequest<TEntity> request, CancellationToken cancellationToken)
+        public async Task<TEntity> Handle(AddEntityRequest<TEntity> request, CancellationToken cancellationToken)
         {
             var entry = await _dbContext.Set<TEntity>().AddAsync(request.Entity);
             return entry.Entity;

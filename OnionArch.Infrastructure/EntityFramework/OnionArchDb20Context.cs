@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnionArch.Infrastructure.Database
+namespace OnionArch.Infrastructure.EntityFramework
 {
     public class OnionArchDb20Context : BaseDbContext<OnionArchDb20Context>
     {

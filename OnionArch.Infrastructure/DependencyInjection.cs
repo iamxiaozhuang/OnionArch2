@@ -9,7 +9,7 @@ using OnionArch.Domain.Common.Repositories;
 using OnionArch.Domain.ProductInventory;
 using OnionArch.Infrastructure.Common.EntityFramework.NotificationHandlers;
 using OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers;
-using OnionArch.Infrastructure.Database;
+using OnionArch.Infrastructure.EntityFramework;
 using System.Reflection;
 
 namespace OnionArch.Infrastructure
@@ -26,14 +26,18 @@ namespace OnionArch.Infrastructure
               options.UseNpgsql(configuration.GetConnectionString("OnionArchDB20")));
 
             services.AddTransient<UnitOfWorkService>();
-            services.AddTransient<IRequestHandler<CommitRequest, int>, CommitRequestHandler<OnionArchDb20Context>>();
+            services.AddTransient<IRequestHandler<SaveChangesRequest, int>, SaveChangesRequestHandler<OnionArchDb20Context>>();
 
             services.AddTransient<RepositoryService<EntityChangedAuditEntity>>();
-            services.AddTransient<IRequestHandler<CreateEntityRequest<EntityChangedAuditEntity>, EntityChangedAuditEntity>, CreateEntityRequestHandler<OnionArchDb20Context, EntityChangedAuditEntity>>();
+            services.AddTransient<IRequestHandler<AddEntityRequest<EntityChangedAuditEntity>, EntityChangedAuditEntity>, AddEntityRequestHandler<OnionArchDb20Context, EntityChangedAuditEntity>>();
             
             services.AddTransient<RepositoryService<ProductInventory>>();
-            services.AddTransient<IRequestHandler<CreateEntityRequest<ProductInventory>, ProductInventory>, CreateEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
-            services.AddTransient<IRequestHandler<ReadEntityRequest<ProductInventory>, ProductInventory>, ReadEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
+            services.AddTransient<IRequestHandler<AddEntityRequest<ProductInventory>, ProductInventory>, AddEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
+            services.AddTransient<IRequestHandler<QueryEntityRequest<ProductInventory>, ProductInventory>, QueryEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
+            services.AddTransient<IRequestHandler<EditEntityRequest<ProductInventory>, ProductInventory>, EditEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
+            services.AddTransient<IRequestHandler<EditEntitiesRequest<ProductInventory>, IQueryable<ProductInventory>>, EditEntitiesRequestHandler<OnionArchDb20Context, ProductInventory>>();
+            services.AddTransient<IRequestHandler<RemoveEntityRequest<ProductInventory>, ProductInventory>, RemoveEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
+           
 
 
 

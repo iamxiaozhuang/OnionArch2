@@ -15,7 +15,7 @@ namespace OnionArch.Domain.Common.Repositories
         /// </summary>
         public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
         {
-            return await _mediator.Send(new CommitRequest(cancellationToken));
+            return await _mediator.Send(new SaveChangesRequest(cancellationToken));
         }
     }
 }

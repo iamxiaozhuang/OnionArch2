@@ -28,7 +28,7 @@ namespace OnionArch.Infrastructure.Common.EntityFramework.NotificationHandlers
             var entity = new EntityChangedAuditEntity(notification.EventSource.GetType().FullName, notification.EventSource.Id, notification.ChangeType, notification.OriginalValues, notification.CurrentValues, notification.OccurredBy, notification.OccurredOn);
             entity.Id = Guid.NewGuid();
             entity.TenantId = notification.EventSource.TenantId;
-            await _repositoryService.Create(entity);
+            await _repositoryService.Add(entity);
         }
 
     }

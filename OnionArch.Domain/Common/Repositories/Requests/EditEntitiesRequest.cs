@@ -1,12 +1,13 @@
 ﻿using MediatR;
+using OnionArch.Domain.Common.Entities;
 using System.Linq.Expressions;
 
 namespace OnionArch.Domain.Common.Repositories
 {
 
-    public class IsExistRequest<TEntity> : IRequest<bool>
+    public class EditEntitiesRequest<TEntity> : IRequest<IQueryable<TEntity>>
     {
-        public IsExistRequest(Expression<Func<TEntity, bool>> whereLambda)
+        public EditEntitiesRequest(Expression<Func<TEntity, bool>> whereLambda)
         {
             WhereLambda = whereLambda;
         }

@@ -3,9 +3,9 @@ using MediatR;
 
 namespace OnionArch.Domain.Common.Repositories
 {
-    public class CommitRequest : IRequest<int>
+    public class SaveChangesRequest : IRequest<int>
     {
-        public CommitRequest(CancellationToken cancellationToken)
+        public SaveChangesRequest(CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
         }

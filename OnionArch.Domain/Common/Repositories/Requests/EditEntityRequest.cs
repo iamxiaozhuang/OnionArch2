@@ -3,9 +3,9 @@
 namespace OnionArch.Domain.Common.Repositories
 {
 
-    public class ReadEntityRequest<TEntity> : IRequest<TEntity>
+    public class EditEntityRequest<TEntity> : IRequest<TEntity>
     {
-        public ReadEntityRequest(Guid id) 
+        public EditEntityRequest(Guid id) 
         {
             Id = id;
         }

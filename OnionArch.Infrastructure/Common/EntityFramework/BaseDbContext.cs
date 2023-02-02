@@ -66,7 +66,7 @@ namespace OnionArch.Infrastructure.Common.Database
         public void SetBaseEntityConfig<T>(ModelBuilder builder) where T : BaseEntity
         {
             builder.Entity<T>().HasKey(e => e.Id);
-            builder.Entity<T>().HasIndex(e => new { e.Id, e.TenantId });
+            builder.Entity<T>().HasIndex(e => new { e.Id, e.TenantId }).IsUnique(true);
             builder.Entity<T>().HasIndex(e => e.TenantId);
             builder.Entity<T>().HasQueryFilter(e => e.TenantId == _currentContext.TenantId);
         }

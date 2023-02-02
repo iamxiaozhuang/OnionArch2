@@ -3,9 +3,9 @@
 namespace OnionArch.Domain.Common.Repositories
 {
 
-    public class GetEntityRequest<TEntity> : IRequest<TEntity>
+    public class RemoveEntityRequest<TEntity> : IRequest<TEntity>
     {
-        public GetEntityRequest(Guid id) 
+        public RemoveEntityRequest(Guid id) 
         {
             Id = id;
         }

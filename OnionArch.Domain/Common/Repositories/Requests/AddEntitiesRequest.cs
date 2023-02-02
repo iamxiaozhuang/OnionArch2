@@ -3,10 +3,10 @@
 namespace OnionArch.Domain.Common.Repositories
 {
 
-    public class CreateEntitiesRequest<TEntity> : IRequest
+    public class AddEntitiesRequest<TEntity> : IRequest
     {
 
-        public CreateEntitiesRequest(params TEntity[] entities) 
+        public AddEntitiesRequest(params TEntity[] entities) 
         {
             Entities = entities;
         }

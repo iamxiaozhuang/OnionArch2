@@ -18,32 +18,31 @@ namespace OnionArch.Application.ProductInventoryUseCase
     [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Patch, HttpUrl = "IncreaseProductInventory")]
     public class IncreaseProductInventory : ICommand<Unit>
     {
-        public string ProductCode { get; set; }
-        public int InventoryAmount { get; set; }
+        public Guid Id { get; set; }
+        public int Amount { get; set; }
     }
     [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Patch, HttpUrl = "DecreaseProductInventory")]
-    public class DecreaseInventory : ICommand<Unit>
+    public class DecreaseProductInventory : ICommand<Unit>
     {
         public string ProductCode { get; set; }
-        public int InventoryAmount { get; set; }
+        public int Amount { get; set; }
     }
-    [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Get, HttpUrl = "ReadProductInventory/{request}/")]
-    public class ReadProductInventory : IQuery<ReadProductInventoryResult>
+    [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Get, HttpUrl = "ReadProductInventory")]
+    public class ReadProductInventory : IQuery<TestResult>
     {
         public Guid Id { get; set; }
-
-        public static bool TryParse(string? value, out ReadProductInventory readProductInventory)
-        {
-            if(Guid.TryParse(value,out Guid id))
-            {
-                readProductInventory = new ReadProductInventory() { Id = id };
-                return true;
-            }
-            readProductInventory = new ReadProductInventory();
-            return false;
-        }
     }
-    public class ReadProductInventoryResult
+
+    [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Delete, HttpUrl = "DeleteProductInventory")]
+    public class DeleteProductInventory : ICommand<TestResult>
+    {
+        public Guid Id { get; set; }
+    }
+
+
+
+
+    public class TestResult
     {
         public string Message { get; set; }
     }
