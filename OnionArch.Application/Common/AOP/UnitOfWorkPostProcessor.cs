@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using OnionArch.Domain.Common.Repositories;
 using OnionArch.Application.Common.CQRS;
 
-namespace OnionArch.Application.Common.Behaviours
+namespace OnionArch.Application.Common.AOP
 {
     public class UnitOfWorkPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse> where TRequest : IRequest<TResponse>, ICommand<TResponse>
     {

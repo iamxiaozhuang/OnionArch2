@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Behaviours\" />
+    <Folder Include="Common\AOP\" />
   </ItemGroup>
 
   <ItemGroup>

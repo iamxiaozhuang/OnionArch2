@@ -2,7 +2,6 @@
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
-using OnionArch.Application.Common.Behaviours;
 using System;
 using System.Collections.Generic;
 using System.Linq;
