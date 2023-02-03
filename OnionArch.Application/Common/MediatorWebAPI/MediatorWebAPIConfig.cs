@@ -11,6 +11,8 @@ namespace OnionArch.Application.Common.HTTP
     {
         public HttpMethodToGenerate HttpMethod { get; set; }
         public string? HttpUrl { get; set; }
+        public string? Summary { get; set; }
+        public string? Description { get; set; }
     }
 
     [Flags]
