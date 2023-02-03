@@ -1,4 +1,5 @@
 ﻿using OnionArch.Domain.Common.Entities;
+using OnionArch.Domain.Common.Paged;
 
 namespace OnionArch.Domain.ProductInventory
 {
@@ -17,5 +18,7 @@ namespace OnionArch.Domain.ProductInventory
         {
             this.InventoryAmount -= amount;
         }
+
+       
     }
 }

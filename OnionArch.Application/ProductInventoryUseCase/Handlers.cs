@@ -1,5 +1,7 @@
 ﻿using Mapster;
 using MediatR;
+using OnionArch.Domain.Common.Exceptions;
+using OnionArch.Domain.Common.Paged;
 using OnionArch.Domain.Common.Repositories;
 using OnionArch.Domain.ProductInventory;
 using System;
@@ -22,6 +24,10 @@ namespace OnionArch.Application.ProductInventoryUseCase
 
         public async Task<Unit> Handle(CreateProductInventory request, CancellationToken cancellationToken)
         {
+            if( await _repositoryService.Any(p => p.ProductCode == request.ProductCode))
+            {
+                throw new BrokenBusinessRuleException("产品库存", request.ProductCode, "产品编码重复");
+            }
             ProductInventory entity = request.Adapt<ProductInventory>();
             await _repositoryService.Add(entity);
             return Unit.Value;
@@ -97,6 +103,32 @@ namespace OnionArch.Application.ProductInventoryUseCase
             ProductInventory productInventory = query.First();
             productInventory.DecreaseInventory(request.Amount);
             return Unit.Value;
+        }
+    }
+
+
+    public class PagedListProductInventoryHandler : IRequestHandler<PagedListProductInventory, List<TestResult>>
+    {
+        private readonly RepositoryService<ProductInventory> _repositoryService;
+
+        public PagedListProductInventoryHandler(RepositoryService<ProductInventory> repositoryService)
+        {
+            _repositoryService = repositoryService;
+        }
+
+        public async Task<List<TestResult>> Handle(PagedListProductInventory request, CancellationToken cancellationToken)
+        {
+            var query = await _repositoryService.Query(p => p.InventoryAmount > 0,
+                new PagedOption() { PageNumber = request.PageNumber, PageSize = request.PageSize }, p => p.ProductCode);
+
+            List<TestResult> results = new List<TestResult>();
+            foreach (var item in query.QueryableData)
+            {
+                TestResult testResponseMessage = new TestResult();
+                testResponseMessage.Message = $"Product Inventory:{item.ProductCode},{item.InventoryAmount}";
+                results.Add(testResponseMessage);
+            }
+            return results;
         }
     }
 }

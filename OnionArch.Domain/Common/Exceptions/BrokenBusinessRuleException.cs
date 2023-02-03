@@ -10,8 +10,8 @@ namespace OnionArch.Domain.Common.Exceptions
     public class BrokenBusinessRuleException : Exception
     {
 
-        public BrokenBusinessRuleException(string ruleCode, string ruleNeme, string entityName, object entityKey, string message)
-            : base($"\"{entityName}({entityKey}\" ) 违反了业务规则 \"{ruleNeme}({ruleCode})\". {message}")
+        public BrokenBusinessRuleException(string entityName, object entityKey, string ruleNeme)
+            : base($"{entityName}({entityKey}) 违反了业务规则 {ruleNeme}")
         {
         }
 

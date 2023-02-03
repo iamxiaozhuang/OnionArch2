@@ -32,6 +32,7 @@ namespace OnionArch.Infrastructure.Common.Database
         }
 
         public DbSet<EntityChangedAuditEntity> EntityChangedAuditLog { get; set; }
+        public DbSet<EntityChangedIntegrationEventEntity> EntityChangedIntegrationEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

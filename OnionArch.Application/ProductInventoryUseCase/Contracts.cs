@@ -39,6 +39,13 @@ namespace OnionArch.Application.ProductInventoryUseCase
         public Guid Id { get; set; }
     }
 
+    [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Get, HttpUrl = "/productinventory/list", Summary = "分页列出产品库存", Description = "")]
+    public class PagedListProductInventory : IQuery<List<TestResult>>
+    {
+       public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+    }
+
 
 
 

@@ -68,10 +68,10 @@ namespace OnionArch.Infrastructure.Common.EntityFramework.NotificationHandlers
                             break;
                     }
                 }
+                entityChangedAuditEntity.Id = Guid.NewGuid();
+                entityChangedAuditEntity.TenantId = notification.EventSource.TenantId;
+                await _repositoryService.Add(entityChangedAuditEntity);
             }
-            entityChangedAuditEntity.Id = Guid.NewGuid();
-            entityChangedAuditEntity.TenantId = notification.EventSource.TenantId;
-            await _repositoryService.Add(entityChangedAuditEntity);
         }
 
     }
