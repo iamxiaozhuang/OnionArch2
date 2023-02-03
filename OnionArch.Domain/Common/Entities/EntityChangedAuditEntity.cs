@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace OnionArch.Domain.Common.Entities
 {
-    public record EntityChangedAuditEntity(string EntityType, Guid EntityId, string ChangeType, string OriginalValues, string CurrentValues, string OccurredBy, DateTime OccurredOn) : BaseEntity
+    public record EntityChangedAuditEntity(string EntityType, Guid EntityId, string ChangeType, string OccurredBy, DateTime OccurredOn) : BaseEntity
     {
-
+        public string OriginalValues { get; set; }
+        public string CurrentValues { get; set; }
     }
 }

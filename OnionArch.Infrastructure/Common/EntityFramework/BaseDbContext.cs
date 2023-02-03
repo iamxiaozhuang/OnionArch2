@@ -110,7 +110,7 @@ namespace OnionArch.Infrastructure.Common.Database
                 {
                     currentValues.Add(property.Name, entry.CurrentValues[property]);
                 }
-                var entityChangedDomainEvent =  new EntityChangedDomainEvent(entry.Entity, _currentContext.UserName, JsonConvert.SerializeObject(originalValues, Formatting.Indented), JsonConvert.SerializeObject(currentValues, Formatting.Indented));
+                var entityChangedDomainEvent =  new EntityChangedDomainEvent(entry.Entity, _currentContext.UserName, originalValues, currentValues);
 
                 switch (entry.State)
                 {

@@ -9,14 +9,14 @@ namespace OnionArch.Domain.Common.DomainEvents
 {
     public class EntityChangedDomainEvent : BaseDomainEvent
     {
-        public EntityChangedDomainEvent(BaseEntity entity, string occurredBy,string originalValues, string currentValues) : base(entity, nameof(EntityChangedDomainEvent), occurredBy)
+        public EntityChangedDomainEvent(BaseEntity entity, string occurredBy, Dictionary<string, object?> originalValues, Dictionary<string, object?> currentValues) : base(entity, nameof(EntityChangedDomainEvent), occurredBy)
         {
             OriginalValues = originalValues;
             CurrentValues = currentValues;
         }
 
         public string ChangeType { get; set; }
-        public string OriginalValues { get; }
-        public string CurrentValues { get; }
+        public Dictionary<string, object?> OriginalValues { get; }
+        public Dictionary<string, object?> CurrentValues { get; }
     }
 }
