@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
 
 namespace OnionArch.Domain.Common.Repositories
 {
 
-    public class QueryEntityRequest<TEntity> : IRequest<TEntity>
+    public class QueryEntityRequest<TEntity, TModel> : IRequest<TModel>
     {
         public QueryEntityRequest(Guid id) 
         {
@@ -11,5 +12,6 @@ namespace OnionArch.Domain.Common.Repositories
         }
 
         public Guid Id { get; set; }
+
     }
 }

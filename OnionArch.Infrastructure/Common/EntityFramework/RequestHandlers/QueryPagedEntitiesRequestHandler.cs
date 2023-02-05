@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OnionArch.Domain.Common.Entities;
 using OnionArch.Domain.Common.Exceptions;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
 {
-    public class QueryPagedEntitiesRequestHandler<TDbContext,TEntity,TOrder> : IRequestHandler<QueryPagedEntitiesRequest<TEntity, TOrder>, PagedResult<TEntity>> where TDbContext : DbContext where TEntity : BaseEntity
+    public class QueryPagedEntitiesRequestHandler<TDbContext,TEntity,TOrder,TModel> : IRequestHandler<QueryPagedEntitiesRequest<TEntity, TOrder, TModel>, PagedResult<TModel>> where TDbContext : DbContext where TEntity : BaseEntity
     {
         private readonly TDbContext _dbContext;
 
@@ -21,7 +22,7 @@ namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
             _dbContext = dbContext;
         }
 
-        public async Task<PagedResult<TEntity>> Handle(QueryPagedEntitiesRequest<TEntity, TOrder> request, CancellationToken cancellationToken)
+        public async Task<PagedResult<TModel>> Handle(QueryPagedEntitiesRequest<TEntity, TOrder, TModel> request, CancellationToken cancellationToken)
         {
             var query = _dbContext.Set<TEntity>().AsNoTracking();
             if (request.WhereLambda != null)
@@ -35,11 +36,12 @@ namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
                 else
                     query = query.OrderByDescending(request.OrderbyLambda);
             }
-            PagedResult<TEntity> result = new PagedResult<TEntity>();
+            PagedResult<TModel> result = new PagedResult<TModel>();
             result.PageNumber = request.PagedOption.PageNumber;
             result.PageSize = request.PagedOption.PageSize;
             result.Count = await query.CountAsync();
-            result.QueryableData = query.Skip((result.PageNumber - 1) * result.PageSize).Take(result.PageSize);
+            query  = query.Skip((result.PageNumber - 1) * result.PageSize).Take(result.PageSize);
+            result.QueryableData = query.ProjectToType<TModel>();
             return result;
         }
 

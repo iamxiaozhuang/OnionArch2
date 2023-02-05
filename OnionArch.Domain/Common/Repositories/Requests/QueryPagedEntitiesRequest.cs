@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace OnionArch.Domain.Common.Repositories
 {
 
-    public class QueryPagedEntitiesRequest<TEntity, TOrder> : IRequest<PagedResult<TEntity>>
+    public class QueryPagedEntitiesRequest<TEntity, TOrder,TModel> : IRequest<PagedResult<TModel>>
     {
         public QueryPagedEntitiesRequest(Expression<Func<TEntity, bool>> whereLambda, PagedOption pagedOption, Expression<Func<TEntity, TOrder>> orderbyLambda, bool isAsc) 
         {

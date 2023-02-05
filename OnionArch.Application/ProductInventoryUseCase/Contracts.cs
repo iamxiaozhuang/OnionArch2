@@ -28,19 +28,19 @@ namespace OnionArch.Application.ProductInventoryUseCase
         public int Amount { get; set; }
     }
     [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Get, HttpUrl = "/productinventory", Summary = "获取产品库存", Description = "")]
-    public class ReadProductInventory : IQuery<TestResult>
+    public class ReadProductInventory : IQuery<ProductInventoryDto>
     {
         public Guid Id { get; set; }
     }
 
     [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Delete, HttpUrl = "/productinventory", Summary = "删除产品库存", Description = "")]
-    public class DeleteProductInventory : ICommand<TestResult>
+    public class DeleteProductInventory : ICommand<ProductInventoryDto>
     {
         public Guid Id { get; set; }
     }
 
     [MediatorWebAPIConfig(HttpMethod = HttpMethodToGenerate.Get, HttpUrl = "/productinventory/list", Summary = "分页列出产品库存", Description = "")]
-    public class PagedListProductInventory : IQuery<List<TestResult>>
+    public class PagedListProductInventory : IQuery<List<ProductInventoryDto>>
     {
        public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -49,8 +49,9 @@ namespace OnionArch.Application.ProductInventoryUseCase
 
 
 
-    public class TestResult
+    public class ProductInventoryDto
     {
-        public string Message { get; set; }
+        public string ProductCode { get; set; }
+        public int Amount { get; set; }
     }
 }

@@ -38,12 +38,11 @@ namespace OnionArch.Infrastructure
             //产品库存实体
             services.AddTransient<RepositoryService<ProductInventory>>();
             services.AddTransient<IRequestHandler<AddEntityRequest<ProductInventory>, ProductInventory>, AddEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
-            services.AddTransient<IRequestHandler<QueryEntityRequest<ProductInventory>, ProductInventory>, QueryEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
             services.AddTransient<IRequestHandler<EditEntityRequest<ProductInventory>, ProductInventory>, EditEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
             services.AddTransient<IRequestHandler<EditEntitiesRequest<ProductInventory>, IQueryable<ProductInventory>>, EditEntitiesRequestHandler<OnionArchDb20Context, ProductInventory>>();
             services.AddTransient<IRequestHandler<RemoveEntityRequest<ProductInventory>, ProductInventory>, RemoveEntityRequestHandler<OnionArchDb20Context, ProductInventory>>();
             services.AddTransient<IRequestHandler<AnyEntitiesRequest<ProductInventory>, bool>, AnyEntitiesRequestHandler<OnionArchDb20Context, ProductInventory>>();
-            services.AddTransient<IRequestHandler<QueryPagedEntitiesRequest<ProductInventory,string>, PagedResult<ProductInventory>>, QueryPagedEntitiesRequestHandler<OnionArchDb20Context, ProductInventory,string>>();
+
 
 
 

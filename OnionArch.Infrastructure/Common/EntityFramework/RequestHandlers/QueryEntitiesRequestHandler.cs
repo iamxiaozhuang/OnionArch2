@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OnionArch.Domain.Common.Entities;
 using OnionArch.Domain.Common.Exceptions;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
 {
-    public class QueryEntitiesRequestHandler<TDbContext,TEntity> : IRequestHandler<QueryEntitiesRequest<TEntity>, IQueryable<TEntity>> where TDbContext : DbContext where TEntity : BaseEntity
+    public class QueryEntitiesRequestHandler<TDbContext,TEntity, TModel> : IRequestHandler<QueryEntitiesRequest<TEntity, TModel>, IQueryable<TModel>> where TDbContext : DbContext where TEntity : BaseEntity
     {
         private readonly TDbContext _dbContext;
 
@@ -20,14 +21,14 @@ namespace OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers
             _dbContext = dbContext;
         }
 
-        public async Task<IQueryable<TEntity>> Handle(QueryEntitiesRequest<TEntity> request, CancellationToken cancellationToken)
+        public async Task<IQueryable<TModel>> Handle(QueryEntitiesRequest<TEntity, TModel> request, CancellationToken cancellationToken)
         {
             var query = _dbContext.Set<TEntity>().AsNoTracking();
             if (request.WhereLambda != null)
             {
                 query = query.Where(request.WhereLambda);
             }
-            return query;
+            return query.ProjectToType<TModel>(); 
         }
 
     }

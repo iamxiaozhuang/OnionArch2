@@ -73,16 +73,16 @@ namespace OnionArch.Domain.Common.Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<TEntity> Query(Guid Id)
+        public async Task<TModel> Query<TModel>(Guid Id)
         {
-            return await _mediator.Send(new QueryEntityRequest<TEntity>(Id));
+            return await _mediator.Send(new QueryEntityRequest<TEntity,TModel>(Id));
         }
         /// <summary>
         /// 查询多个实体
         /// </summary>
-        public async Task<IQueryable<TEntity>> Query(Expression<Func<TEntity, bool>> whereLambda)
+        public async Task<IQueryable<TModel>> Query<TModel>(Expression<Func<TEntity, bool>> whereLambda)
         {
-            return await _mediator.Send(new QueryEntitiesRequest<TEntity>(whereLambda));
+            return await _mediator.Send(new QueryEntitiesRequest<TEntity,TModel>(whereLambda));
         }
         /// <summary>
         /// 分页查询多个实体
@@ -93,9 +93,9 @@ namespace OnionArch.Domain.Common.Repositories
         /// <param name="orderbyLambda"></param>
         /// <param name="isAsc"></param>
         /// <returns></returns>
-        public async Task<PagedResult<TEntity>> Query<TOrder>(Expression<Func<TEntity, bool>> whereLambda, PagedOption pagedOption, Expression<Func<TEntity, TOrder>> orderbyLambda, bool isAsc = true)
+        public async Task<PagedResult<TModel>> Query<TOrder,TModel>(Expression<Func<TEntity, bool>> whereLambda, PagedOption pagedOption, Expression<Func<TEntity, TOrder>> orderbyLambda, bool isAsc = true)
         {
-            return await _mediator.Send(new QueryPagedEntitiesRequest<TEntity, TOrder>(whereLambda, pagedOption, orderbyLambda, isAsc));
+            return await _mediator.Send(new QueryPagedEntitiesRequest<TEntity, TOrder,TModel>(whereLambda, pagedOption, orderbyLambda, isAsc));
         }
 
         /// <summary>

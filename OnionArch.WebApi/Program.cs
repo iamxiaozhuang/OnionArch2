@@ -1,7 +1,14 @@
+using Google.Api;
+using MediatR;
 using OnionArch.Application;
 using OnionArch.Application.ProductInventoryUseCase;
 using OnionArch.Domain.Common.CurrentContext;
+using OnionArch.Domain.Common.Paged;
+using OnionArch.Domain.Common.Repositories;
+using OnionArch.Domain.ProductInventory;
 using OnionArch.Infrastructure;
+using OnionArch.Infrastructure.Common.EntityFramework.RequestHandlers;
+using OnionArch.Infrastructure.EntityFramework;
 using OnionArch.WebApi.Common;
 using OnionArch.WebApi.Common.CurrentContext;
 
@@ -17,6 +24,10 @@ builder.Services.AddApplication();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentContext, CurrentContext>();
+//产品库存实体查询
+builder.Services.AddTransient<IRequestHandler<QueryEntityRequest<ProductInventory, ProductInventoryDto>, ProductInventoryDto>, QueryEntityRequestHandler<OnionArchDb20Context, ProductInventory, ProductInventoryDto>>();
+builder.Services.AddTransient<IRequestHandler<QueryPagedEntitiesRequest<ProductInventory, string, ProductInventoryDto>, PagedResult<ProductInventoryDto>>, QueryPagedEntitiesRequestHandler<OnionArchDb20Context, ProductInventory, string, ProductInventoryDto>>();
+
 
 builder.Services.AddDaprClient();
 

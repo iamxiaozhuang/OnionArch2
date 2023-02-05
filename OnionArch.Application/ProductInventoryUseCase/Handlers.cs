@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using OnionArch.Domain.Common.Entities;
 using OnionArch.Domain.Common.Exceptions;
 using OnionArch.Domain.Common.Paged;
 using OnionArch.Domain.Common.Repositories;
@@ -28,13 +29,13 @@ namespace OnionArch.Application.ProductInventoryUseCase
             {
                 throw new BrokenBusinessRuleException("产品库存", request.ProductCode, "产品编码重复");
             }
-            ProductInventory entity = request.Adapt<ProductInventory>();
+            ProductInventory entity = ProductInventory.Create(request);
             await _repositoryService.Add(entity);
             return Unit.Value;
         }
     }
 
-    public class ReadProductInventoryHandler : IRequestHandler<ReadProductInventory, TestResult>
+    public class ReadProductInventoryHandler : IRequestHandler<ReadProductInventory, ProductInventoryDto>
     {
         private readonly RepositoryService<ProductInventory> _repositoryService;
 
@@ -43,16 +44,15 @@ namespace OnionArch.Application.ProductInventoryUseCase
             _repositoryService = repositoryService;
         }
 
-        public async Task<TestResult> Handle(ReadProductInventory request, CancellationToken cancellationToken)
+        public async Task<ProductInventoryDto> Handle(ReadProductInventory request, CancellationToken cancellationToken)
         {
-            ProductInventory productInventory = await _repositoryService.Query(request.Id);
-            TestResult testResponseMessage = new TestResult();
-            testResponseMessage.Message = $"Get Product Inventory:{productInventory.ProductCode},{productInventory.InventoryAmount}";
-            return testResponseMessage;
+            TypeAdapterConfig<ProductInventory, ProductInventoryDto>.NewConfig().Map(d => d.Amount, s => s.InventoryAmount);
+            ProductInventoryDto dto = await _repositoryService.Query<ProductInventoryDto>(request.Id);
+            return dto;
         }
     }
 
-    public class DeleteProductInventoryHandler : IRequestHandler<DeleteProductInventory, TestResult>
+    public class DeleteProductInventoryHandler : IRequestHandler<DeleteProductInventory, ProductInventoryDto>
     {
         private readonly RepositoryService<ProductInventory> _repositoryService;
 
@@ -61,12 +61,13 @@ namespace OnionArch.Application.ProductInventoryUseCase
             _repositoryService = repositoryService;
         }
 
-        public async Task<TestResult> Handle(DeleteProductInventory request, CancellationToken cancellationToken)
+        public async Task<ProductInventoryDto> Handle(DeleteProductInventory request, CancellationToken cancellationToken)
         {
             ProductInventory productInventory = await _repositoryService.Remove(request.Id);
-            TestResult testResponseMessage = new TestResult();
-            testResponseMessage.Message = $"Delete successfully:{productInventory.ProductCode},{request.Id}";
-            return testResponseMessage;
+            ProductInventoryDto dto = new ProductInventoryDto();
+            dto.ProductCode = productInventory.ProductCode;
+            dto.Amount = productInventory.InventoryAmount;
+            return dto;
         }
     }
 
@@ -107,7 +108,7 @@ namespace OnionArch.Application.ProductInventoryUseCase
     }
 
 
-    public class PagedListProductInventoryHandler : IRequestHandler<PagedListProductInventory, List<TestResult>>
+    public class PagedListProductInventoryHandler : IRequestHandler<PagedListProductInventory, List<ProductInventoryDto>>
     {
         private readonly RepositoryService<ProductInventory> _repositoryService;
 
@@ -116,19 +117,12 @@ namespace OnionArch.Application.ProductInventoryUseCase
             _repositoryService = repositoryService;
         }
 
-        public async Task<List<TestResult>> Handle(PagedListProductInventory request, CancellationToken cancellationToken)
+        public async Task<List<ProductInventoryDto>> Handle(PagedListProductInventory request, CancellationToken cancellationToken)
         {
-            var query = await _repositoryService.Query(p => p.InventoryAmount > 0,
+            var result = await _repositoryService.Query<string,ProductInventoryDto>(p => p.InventoryAmount > 0,
                 new PagedOption() { PageNumber = request.PageNumber, PageSize = request.PageSize }, p => p.ProductCode);
 
-            List<TestResult> results = new List<TestResult>();
-            foreach (var item in query.QueryableData)
-            {
-                TestResult testResponseMessage = new TestResult();
-                testResponseMessage.Message = $"Product Inventory:{item.ProductCode},{item.InventoryAmount}";
-                results.Add(testResponseMessage);
-            }
-            return results;
+            return result.QueryableData.ToList();
         }
     }
 }
